@@ -20,4 +20,4 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     }),
     DeliveryModule],
 })
-export class AppModule {}
+export class AppModule { }
