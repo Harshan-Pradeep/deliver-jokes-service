@@ -4,6 +4,7 @@ import { Joke } from './entities/delivery.entity';
 import { Repository } from 'typeorm';
 import { Type } from './entities/type.entity';
 import { CreateTypeDto } from './dto/create-type.dto';
+import { CreateJokeDto } from './dto/create-joke.dto';
 
 @Injectable()
 export class DeliveryService {
@@ -35,5 +36,10 @@ export class DeliveryService {
 
 
     }
+
+    async createJoke(createJokeDto: CreateJokeDto): Promise<Joke> {
+        const newJoke = this.jokeRepository.create(createJokeDto);
+        return await this.jokeRepository.save(newJoke);
+      }
 
 }
