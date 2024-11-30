@@ -41,7 +41,6 @@ export class DeliveryController {
     @Post('submit')
     async createJoke(@Body() createJokeDto: CreateJokeDto, @Res() res: Response) {
         const joke = await this.deliveryService.createJoke(createJokeDto);
-        console.log("data",createJokeDto)
         return res.status(HttpStatus.CREATED).json({
             statusCode: HttpStatus.CREATED,
             message: 'Joke created successfully',
