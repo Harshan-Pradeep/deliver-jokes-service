@@ -46,7 +46,6 @@ npm install
 # Start the development server
 npm run start:dev
 ```
-
 Access the application at `http://localhost:3000` | http://ec2-13-51-175-32.eu-north-1.compute.amazonaws.com
 
 ## Deployment
