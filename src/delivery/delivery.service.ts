@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, BadRequestException, Inject } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException, Inject, InternalServerErrorException } from '@nestjs/common';
 import { IJokeRepository } from './repositories/joke.repository.interface';
 import { ITypeRepository } from './repositories/type.repository.interface';
 import { CreateTypeDto } from './dto/create-type.dto';
@@ -16,26 +16,56 @@ export class DeliveryService {
     ) { }
 
     async findAllTypes(): Promise<Type[]> {
-        const types = await this.typeRepository.findAll();
-        if (types.length === 0) {
-            throw new NotFoundException('No joke types found');
+        try {
+            const types = await this.typeRepository.findAll();
+            if (types.length === 0) {
+                throw new NotFoundException('No joke types found');
+            }
+            return types;
+        } catch (error) {
+            if (error instanceof NotFoundException) {
+                throw error;
+            }
+            throw new InternalServerErrorException('Error retrieving joke types');
         }
-        return types;
     }
 
     async findRandomJoke(): Promise<Joke> {
-        return await this.jokeRepository.findRandomApprovedJoke();
+        try {
+            const randomJoke = await this.jokeRepository.findRandomApprovedJoke();
+
+            if (!randomJoke) {
+                throw new NotFoundException('No joke found');
+            }
+            return randomJoke;
+        } catch (error) {
+            if (error instanceof NotFoundException) {
+                throw error;
+            }
+            throw new InternalServerErrorException('Error retrieving random joke');
+        }
     }
 
     async createJokeType(createTypeDto: CreateTypeDto): Promise<Type> {
-        const existingType = await this.typeRepository.findByName(createTypeDto.name);
-        if (existingType) {
-            throw new BadRequestException('Joke type already exists');
+        try {
+            const existingType = await this.typeRepository.findByName(createTypeDto.name);
+            if (existingType) {
+                throw new BadRequestException('Joke type already exists');
+            }
+            return await this.typeRepository.create(createTypeDto);
+        } catch (error) {
+            if (error instanceof BadRequestException) {
+                throw error;
+            }
+            throw new InternalServerErrorException('Error creating joke type');
         }
-        return await this.typeRepository.create(createTypeDto);
     }
 
     async createJoke(createJokeDto: CreateJokeDto): Promise<Joke> {
-        return await this.jokeRepository.create(createJokeDto);
+        try {
+            return await this.jokeRepository.create(createJokeDto);
+        } catch (error) {
+            throw new InternalServerErrorException('Error creating joke');
+        }
     }
 }
