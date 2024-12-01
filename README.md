@@ -18,8 +18,6 @@ A microservice that delivers approved jokes to users upon request. It provides a
 - [Testing](#testing)
 - [Environment Variables](#environment-variables)
 - [API Documentation](#api-documentation)
-- [Contributing](#contributing)
-- [License](#license)
 - [Contact Information](#contact-information)
 
 ## Prerequisites
