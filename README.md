@@ -46,7 +46,7 @@ npm install
 # Start the development server
 npm run start:dev
 ```
-Access the application at `http://localhost:3000` | http://ec2-13-51-175-32.eu-north-1.compute.amazonaws.com
+Access the application at `http://localhost:3000` | [http://ec2-13-51-175-32.eu-north-1.compute.amazonaws.com](http://ec2-13-60-197-178.eu-north-1.compute.amazonaws.com/)
 
 ## Deployment
 
@@ -121,7 +121,7 @@ The API is documented using Swagger.
 
 Access the API documentation at:
 
-[http://ec2-13-51-175-32.eu-north-1.compute.amazonaws.com/api-docs](http://ec2-13-51-175-32.eu-north-1.compute.amazonaws.com/api-docs)
+[http://ec2-13-60-197-178.eu-north-1.compute.amazonaws.com/api-docs](http://ec2-13-60-197-178.eu-north-1.compute.amazonaws.com/api-docs)
 
 ## Contact Information
 
