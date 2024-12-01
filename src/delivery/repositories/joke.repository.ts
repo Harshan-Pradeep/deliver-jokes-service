@@ -13,20 +13,11 @@ export class JokeRepository implements IJokeRepository {
         private readonly jokeRepository: Repository<Joke>,
     ) { }
 
-    async findRandomApprovedJoke(type?: string): Promise<Joke> {
-        const queryBuilder = this.jokeRepository.createQueryBuilder('joke')
-            .where('joke.status = :status', { status: JokeStatus.APPROVED });
-
-        if (type) {
-            queryBuilder.andWhere('joke.type = :type', { type });
-        }
-
-        const jokes = await queryBuilder.getMany();
-
+    async findRandomApprovedJoke(): Promise<Joke> {
+        const jokes = await this.jokeRepository.find({ where: { status: JokeStatus.APPROVED } });
         if (jokes.length === 0) {
             return null;
         }
-
         const randomIndex = Math.floor(Math.random() * jokes.length);
         return jokes[randomIndex];
     }

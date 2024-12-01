@@ -30,23 +30,12 @@ export class DeliveryService {
         }
     }
 
-    async findRandomJoke(type?: string): Promise<Joke> {
+    async findRandomJoke(): Promise<Joke> {
         try {
-            if (type) {
-                const existingType = await this.typeRepository.findByName(type);
-                if (!existingType) {
-                    throw new NotFoundException(`Joke type '${type}' not found`);
-                }
-            }
-
-            const randomJoke = await this.jokeRepository.findRandomApprovedJoke(type);
+            const randomJoke = await this.jokeRepository.findRandomApprovedJoke();
 
             if (!randomJoke) {
-                throw new NotFoundException(
-                    type
-                        ? `No approved jokes found for type '${type}'`
-                        : 'No approved jokes found'
-                );
+                throw new NotFoundException('No joke found');
             }
             return randomJoke;
         } catch (error) {
