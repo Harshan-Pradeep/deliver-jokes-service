@@ -1,9 +1,9 @@
-import { Body, Controller, Get, HttpStatus, Post, Res, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Post, Res, InternalServerErrorException, NotFoundException, Query } from '@nestjs/common';
 import { DeliveryService } from './delivery.service';
 import { CreateTypeDto } from './dto/create-type.dto';
 import { CreateJokeDto } from './dto/create-joke.dto';
 import { Response } from 'express';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Delivery APIs')
 @Controller('api/v1/delivery')
@@ -12,6 +12,11 @@ export class DeliveryController {
 
     @Get('random')
     @ApiOperation({ summary: 'Retrieve a random joke' })
+    @ApiQuery({
+        name: 'type',
+        required: false,
+        description: 'Type of joke to retrieve',
+    })
     @ApiResponse({
         status: 200,
         description: 'Random joke retrieved successfully.',
@@ -34,12 +39,24 @@ export class DeliveryController {
     })
     @ApiResponse({
         status: 404,
-        description: 'Unable to find a joke',
+        description: 'Unable to find a joke or joke type',
         content: {
             'application/json': {
-                example: {
-                    statusCode: 404,
-                    message: "No joke found"
+                examples: {
+                    jokeNotFound: {
+                        summary: 'No joke found',
+                        value: {
+                            statusCode: 404,
+                            message: "No joke found"
+                        }
+                    },
+                    typeNotFound: {
+                        summary: 'Joke type not found',
+                        value: {
+                            statusCode: 404,
+                            message: "Joke type 'sample type' not found"
+                        }
+                    }
                 }
             }
         }
@@ -48,9 +65,12 @@ export class DeliveryController {
         status: 500,
         description: 'Error retrieving random joke'
     })
-    async findRandom(@Res() res: Response) {
+    async findRandom(
+        @Res() res: Response,
+        @Query('type') type?: string
+    ) {
         try {
-            const joke = await this.deliveryService.findRandomJoke();
+            const joke = await this.deliveryService.findRandomJoke(type);
             return res.status(HttpStatus.OK).json({
                 statusCode: HttpStatus.OK,
                 message: 'Random joke retrieved successfully',
