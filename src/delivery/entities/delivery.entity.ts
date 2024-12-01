@@ -1,12 +1,14 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 import { IsString, MinLength, IsIn, IsNotEmpty, IsOptional } from 'class-validator';
 import { JokeStatus } from '../enums/joke-status.enum';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
 export class Joke {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @ApiProperty({ description: 'The name of the joke type', example: 'Knock-Knock' })
   @Column()
   @IsString({ message: 'Content must be a string' })
   @IsNotEmpty({ message: 'Content cannot be empty' })

@@ -16,7 +16,7 @@ export class JokeRepository implements IJokeRepository {
     async findRandomApprovedJoke(): Promise<Joke> {
         const jokes = await this.jokeRepository.find({ where: { status: JokeStatus.APPROVED } });
         if (jokes.length === 0) {
-            throw new Error('No approved jokes found');
+            return null;
         }
         const randomIndex = Math.floor(Math.random() * jokes.length);
         return jokes[randomIndex];
