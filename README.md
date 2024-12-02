@@ -83,6 +83,7 @@ Access the application at `http://localhost:3000` | [http://ec2-13-51-175-32.eu-
 9. **Configure a Process Manager **:
    - Use PM2 to keep the application running in the background.
 
+
 ## CI/CD Pipeline
 
 The project utilizes GitHub Actions for continuous integration and deployment.
